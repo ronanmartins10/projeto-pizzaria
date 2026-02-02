@@ -10,7 +10,7 @@ export const validateSchema = (schema: ZodType) => async (req: Request, res: Res
         params: req.params,
       });
       return next();  
-
+ 
     }catch(error){
         if (error instanceof ZodError){
             return res.status(400).json({
