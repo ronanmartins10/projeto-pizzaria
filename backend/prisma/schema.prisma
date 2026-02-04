@@ -4,6 +4,9 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// Para criar uma migrate > npx prisma migrate dev
+// para criar a pasta generate sempre rode depois > npx prisma generate
+
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -25,7 +28,6 @@ model User {
   email String @unique
   password String
   role Role @default(STAFF)
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -35,12 +37,10 @@ model User {
 model Category{
   id String @id @default(uuid())
   name String
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   products Product[]
-
   @@map("categories")
 }
 
@@ -51,15 +51,12 @@ model Product{
   description String
   banner String
   disabled Boolean @default(false)
-
   category_id String
   category Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
-
-  items Item[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  items Item[]
   @@map("products")
 }
 
@@ -69,12 +66,10 @@ model Order {
   status Boolean @default(false) // false = Pendente, true = Pronto
   draft Boolean @default(true) // false ainda é rascunho, true= pedido enviado a cozinha
   name String?
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   items Item[]
-
   @@map("orders")
 }
 
@@ -83,12 +78,10 @@ model Item {
   amount Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
   order_id String
   order Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
-
   product_id String
   product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
   @@map("items")
-}
+} 
