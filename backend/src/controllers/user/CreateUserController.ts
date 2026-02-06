@@ -17,7 +17,7 @@ class CreateUserController {
         });
 
 
-        res.json({message: user });
+        res.json(user);
     }
 }
 

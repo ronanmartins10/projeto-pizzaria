@@ -1,5 +1,8 @@
 import { error } from "node:console";
 import prismaClient from "../../prisma";
+import { hash } from 'bcryptjs'
+import { id } from "zod/v4/locales";
+
 interface CreateUserProps {
     name: string;
     email: string;
@@ -22,16 +25,25 @@ class CreateUserService{
         }
 
 
+        const passwordhash = await hash(password, 8);
+
 
         const user = await prismaClient.user.create({
             data:{
                 name: name, 
                 email: email,
-                password: password
-            }
-        })
+                password: passwordhash,
+            },
+            select:{
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                createdAt: true,
+            },
+        });
 
-        return user.name; 
+        return user; 
     }
 }
 
